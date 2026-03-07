@@ -111,6 +111,15 @@ B9 00 40 00 00          # mov ecx, 16384   max bytes to process (safety)
 
 # Main loop start
 44 8A 06                # mov r8b, [rsi]   load byte
+
+# Check labels
+41 80 F8 3A             # cmp r8b, ':'     colon?
+75 08                   # jne skip colon
+48 FF C6                # inc rsi          advance input (skip next)
+E9 4E 00 00 00          # jmp next_byte
+#skip_colon
+
+
 45 84 C0                # test r8b, r8b    null terminator?
 74 51                   # jz exit
 
@@ -153,7 +162,8 @@ EB 09                   # jmp next_byte
 
 # next_byte:
 48 FF C6                # inc rsi          advance input
-E9 A2 FF FF FF          # main loop jump back
+# baseline without extra processing for fam1 is A2. For each additional byte sub 1.
+E9 94 FF FF FF          # main loop jump back
 
 # exit / cleanup
 48 89 F8                # mov rax, rdi     current output pointer
