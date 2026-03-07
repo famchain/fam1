@@ -116,8 +116,10 @@ B9 00 40 00 00          # mov ecx, 16384   max bytes to process (safety)
 
 # Check labels
 41 80 F8 3A             # cmp r8b, ':'     colon?
-75 08                   # jne skip colon
+75 0F                   # jne skip colon
 48 FF C6                # inc rsi          advance input (skip next)
+44 8A 06                # mov r8b, [rsi]   load byte
+4A 89 3C 04             # mov    QWORD PTR [rsp+r8*1],rdi
 E9 4E 00 00 00          # jmp next_byte
 #skip_colon
 
@@ -165,7 +167,7 @@ EB 09                   # jmp next_byte
 # next_byte:
 48 FF C6                # inc rsi          advance input
 # baseline without extra processing for fam1 is A7. For each additional byte sub 1.
-E9 99 FF FF FF          # main loop jump back
+E9 92 FF FF FF          # main loop jump back
 
 4881C4 FFFF0000 # add rsp 65535
 
