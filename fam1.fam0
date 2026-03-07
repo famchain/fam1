@@ -102,12 +102,14 @@ BE FF FF 00 00          # esi = 65535
 49 89 C5                # mov r13, rax     save output base in r13
 
 # Setup before main loop
+4881EC FFFF0000         # sub rsp 65535
 4C 89 E6                # mov rsi, r12     input pointer
 4C 89 EF                # mov rdi, r13     output pointer
 B9 00 40 00 00          # mov ecx, 16384   max bytes to process (safety)
 41 B9 00 00 00 00       # mov r9d, 0       nibble counter (odd/even)
 41 BA 00 00 00 00       # mov r10d, 0      temporary high nibble
 41 BB 00 00 00 00       # mov r11d, 0      comment flag
+4D 31 C0  # zero r8
 
 # Main loop start
 44 8A 06                # mov r8b, [rsi]   load byte
@@ -162,8 +164,11 @@ EB 09                   # jmp next_byte
 
 # next_byte:
 48 FF C6                # inc rsi          advance input
-# baseline without extra processing for fam1 is A2. For each additional byte sub 1.
-E9 94 FF FF FF          # main loop jump back
+# baseline without extra processing for fam1 is A7. For each additional byte sub 1.
+E9 99 FF FF FF          # main loop jump back
+
+4881C4 FFFF0000 # add rsp 65535
+
 
 # exit / cleanup
 48 89 F8                # mov rax, rdi     current output pointer
