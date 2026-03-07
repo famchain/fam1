@@ -109,10 +109,20 @@ B9 00 40 00 00          # mov ecx, 16384   max bytes to process (safety)
 41 BA 00 00 00 00       # mov r10d, 0      temporary high nibble
 41 BB 00 00 00 00       # mov r11d, 0      comment flag
 
+4881EC FFFF0000         # sub rsp 65535
+
 # Main loop start
 44 8A 06                # mov r8b, [rsi]   load byte
+
+41 80 F8 3A             # cmp r8b, ':'     colon?
+75 08                   # jmp skip colon
+48 FF C6                # inc rsi          advance input
+E9 56 00 00 00          # jmp next_byte
+#skip_colon
+
+# Termination
 45 84 C0                # test r8b, r8b    null terminator?
-74 4E                   # jz exit
+74 51                   # jz exit
 
 41 80 F8 0A             # cmp r8b, 10      newline?
 75 03                   # jne skip_nl
@@ -153,7 +163,10 @@ EB 09                   # jmp next_byte
 
 # next_byte:
 48 FF C6                # inc rsi          advance input
-E2 AA                   # loop main
+#E2 AA
+E9 99 FF FF FF # loop main
+
+4881C4 FFFF0000 # add rsp 65535
 
 # exit / cleanup
 48 89 F8                # mov rax, rdi     current output pointer
