@@ -1,0 +1,3 @@
+[submodule "fam0"]
+	path = fam0
+	url = https://github.com/famchain/fam0.git
