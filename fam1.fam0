@@ -116,14 +116,14 @@ B9 00 40 00 00          # mov ecx, 16384   max bytes to process (safety)
 
 # Check pointers
 41 80 F8 25             # cmp r8b, '%'     percent?
-75 1D                   # jne skip percent
+75 1E                   # jne skip percent
 48 FF C6                # inc rsi          advance input (skip next)
 41 B8 E9 00 00 00       # set r8b to 'E9'
 44 88 07                # mov [rdi], r8b   store byte
 48 FF C7                # inc rdi          advance output
 44 8A 06                # mov r8b, [rsi]   load byte
 44 88 07                # mov [rdi], r8b   store byte
-48 FF C7                # inc rdi          advance output
+48 83 C7 04             # add_rdi, 4 advance output
 E9 63 00 00 00          # jmp next_byte
 #skip_percent
 
@@ -179,7 +179,7 @@ EB 09                   # jmp next_byte
 # next_byte:
 48 FF C6                # inc rsi          advance input
 # baseline without extra processing for fam1 is A7. For each additional byte sub 1.
-E9 6F FF FF FF          # main loop jump back
+E9 6E FF FF FF          # main loop jump back
 
 4881C4 FFFF0000 # add rsp 65535
 
