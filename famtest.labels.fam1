@@ -57,7 +57,7 @@ E5 00 00 00 00 00 00 00 # p_memsz memory size (same as filesz)
 
 # _start entry point
 5E # pop rsi
-48 C7 C7 00 00 00 00 # mov_rdi, 0  
+48 C7 C7 00 00 00 00 # mov_rdi, 0  %
 
 :f
 48 81 FE 01 00 00 00 # cmp_rsi, 1
