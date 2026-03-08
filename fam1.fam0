@@ -188,10 +188,19 @@ EB 09                   # jmp next_byte
 # baseline without extra processing for fam1 is A7. For each additional byte sub 1.
 E9 57 FF FF FF          # main loop jump back
 
-4881C4 FFFF0000 # add rsp 65535
+
+4C 89 EE           #     mov rsi, r13             ; rsi = output start
+#second_pass_loop:
+48 39 FE       #         cmp rsi, rdi             ; rsi == rdi ?
+74 05          #         je exit_second_pass      ; yes → done
+
+#next_byte:
+48 FF C6       #         inc rsi                
+EB F6          #         jmp second_pass_loop     ; loop back (short jump -8)
+#exit_second_pass:
 
 
-# exit / cleanup
+# ftruncate
 48 89 F8                # mov rax, rdi     current output pointer
 4C 29 E8                # sub rax, r13     bytes written
 48 89 C6                # mov rsi, rax     length
@@ -199,6 +208,14 @@ E9 57 FF FF FF          # main loop jump back
 6A 4D 58                # push 77; pop rax __NR_ftruncate
 0F 05                   # syscall
 
+
+
+
+4881C4 FFFF0000 # add rsp 65535
+
+
+
+# exit
 6A 3C                   # push 60          __NR_exit
 58                      # pop rax
 6A 00                   # push 0
