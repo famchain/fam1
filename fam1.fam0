@@ -156,7 +156,7 @@ EB 4E                   # jmp next_byte
 75 0F                   # jne skip colon
 48 FF C6                # inc rsi          advance input (skip next)
 44 8A 06                # mov r8b, [rsi]   load byte
-4A 89 3C 04             # mov    QWORD PTR [rsp+r8*1],rdi
+4A 89 3C C4             # mov    QWORD PTR [rsp+r8*8],rdi
 E9 30 00 00 00          # jmp next_byte
 #skip_colon
 
@@ -209,7 +209,7 @@ E9 5B FF FF FF          # main loop jump back
 48 FF C6                # inc rsi          advance input
 48 FF C6                # inc rsi          advance input
 44 8A 06                # mov r8b, [rsi]   load byte
-4A 8B 14 04             # mov    rdx,QWORD PTR [rsp+r8*1]
+4A 8B 14 C4             # mov    rdx,QWORD PTR [rsp+r8*8]
 48 29 F2                # sub rdx, rsi
 48 FF CA                # decrement rdx
 48 83 EE 03             # sub rsi, 3
