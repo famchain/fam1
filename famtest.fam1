@@ -56,20 +56,16 @@ E5 00 00 00 00 00 00 00 # p_memsz memory size (same as filesz)
 01 00 00 00 00 00 00 00 # p_align 1 byte alignment
 
 # _start entry point
-5F                      # pop rdi
-48 83 FF 01             # cmp_rdi, 1
-0F 8F %a       # jg 
-6A 00                   # push 0
-5F                      # pop rdi
-6A 3C                   # push 3C
-58                      # pop rax
-0F 05                   # syscall exit
+5E # pop rsi
+48 C7 C7 00 00 00 00 # mov_rdi, 0
 
-:a
-6A 01                   # push 1
-5F                      # pop rdi
-6A 3C                   # push 3C
-58                      # pop rax
-0F 05                   # syscall exit
+#begin:
+48 81 FE 01 00 00 00 # cmp_rsi, 1
+0F 8C 10 00 00 00 # jump less than end
+48 83 C7 02 # add_rdi, 2
+48 81 EE 01 00 00 00 # sub_rsi, 1
+E9 E3 FF FF FF # jump begin
+#end:
 
-
+6A 3C 58
+0F 05      # exit
