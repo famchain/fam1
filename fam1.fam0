@@ -115,7 +115,7 @@ B9 00 40 00 00          # mov ecx, 16384   max bytes to process (safety)
 44 8A 06                # mov r8b, [rsi]   load byte
 
 # Check pointers
-41 80 F8 25             # cmp r8b, '%'     percent?
+41 80 F8 25             # cmp r8b, percent?
 75 29                   # jne skip percent
 48 FF C6                # inc rsi          advance input (skip next)
 41 B8 37 00 00 00       # set r8b to 37
