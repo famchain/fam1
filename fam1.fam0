@@ -102,7 +102,7 @@ BE FF FF 00 00          # esi = 65535
 49 89 C5                # mov r13, rax     save output base in r13
 
 # Setup before main loop
-4881EC FFFF0000         # sub rsp 65535
+4881EC FFFF0000         # sub rsp 65535 (allocate 64 Kib on stack)
 4C 89 E6                # mov rsi, r12     input pointer
 4C 89 EF                # mov rdi, r13     output pointer
 B9 00 40 00 00          # mov ecx, 16384   max bytes to process (safety)
@@ -123,7 +123,6 @@ B9 00 40 00 00          # mov ecx, 16384   max bytes to process (safety)
 # Check if in comment
 45 84 DB                # test r11b, 1     in comment?
 0F 85 88 00 00 00       # jnz
-#75 59                  # jnz next_byte
 41 80 F8 23             # cmp r8b, '#'
 75 05                   # jne skip_comment
 41 B3 01                # mov r11b, 1      start comment
@@ -194,7 +193,7 @@ E9 5B FF FF FF          # main loop jump back
 
 
 # setup second pass
-4C 89 EE           #     mov rsi, r13             ; rsi = output start
+4C 89 EE                # mov rsi, r13 rsi = output start
 4D 31 C0                # zero r8
 #second_pass_loop:
 44 8A 06                # mov r8b, [rsi]   load byte
@@ -217,11 +216,11 @@ E9 5B FF FF FF          # main loop jump back
 89 16                   # mov [rsi], edx (store offset)
 #skip_patch
 
-48 39 FE       #         cmp rsi, rdi             ; rsi == rdi ?
-74 05          #         je exit_second_pass      ; yes → done
+48 39 FE                # cmp rsi, rdi             ; rsi == rdi ?
+74 05                   # je exit_second_pass      ; yes → done
 #next_byte:
-48 FF C6       #         inc rsi                
-EB C8          #         jmp second_pass_loop     ; loop back (short jump -8)
+48 FF C6                # inc rsi                
+EB C8                   # jmp second_pass_loop     ; loop back (short jump -8)
 #exit_second_pass:
 
 
@@ -233,12 +232,8 @@ EB C8          #         jmp second_pass_loop     ; loop back (short jump -8)
 6A 4D 58                # push 77; pop rax __NR_ftruncate
 0F 05                   # syscall
 
-
-
-
-4881C4 FFFF0000 # add rsp 65535
-
-
+# Cleanup stack
+48 81 C4 FF FF 00 00    # add rsp 65535
 
 # exit
 6A 3C                   # push 60          __NR_exit
