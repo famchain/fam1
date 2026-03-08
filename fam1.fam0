@@ -189,14 +189,19 @@ EB 09                   # jmp next_byte
 E9 57 FF FF FF          # main loop jump back
 
 
+# setup second pass
 4C 89 EE           #     mov rsi, r13             ; rsi = output start
 #second_pass_loop:
+44 8A 06                # mov r8b, [rsi]   load byte
+
+
+
+
 48 39 FE       #         cmp rsi, rdi             ; rsi == rdi ?
 74 05          #         je exit_second_pass      ; yes → done
-
 #next_byte:
 48 FF C6       #         inc rsi                
-EB F6          #         jmp second_pass_loop     ; loop back (short jump -8)
+EB F3          #         jmp second_pass_loop     ; loop back (short jump -8)
 #exit_second_pass:
 
 
