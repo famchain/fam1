@@ -204,7 +204,7 @@ E9 5B FF FF FF          # main loop jump back
 48 FF C6                # inc rsi          advance input
 44 8A 06                # mov r8b, [rsi]   load byte
 41 80 F8 37             # cmp r8b, 37     patch needed?
-75 18                   # jne skip_patch
+75 19                   # jne skip_patch
 # We need to patch (note: this is simplistic since we don't check all bytes, but sufficient for fam1)                 
 48 FF C6                # inc rsi          advance input
 48 FF C6                # inc rsi          advance input
