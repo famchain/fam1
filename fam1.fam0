@@ -194,13 +194,17 @@ E9 57 FF FF FF          # main loop jump back
 #second_pass_loop:
 44 8A 06                # mov r8b, [rsi]   load byte
 
-# Check labels
+# Check patches
 41 80 F8 E9             # cmp r8b, E9     patch needed?
-75 15                   # jne skip_patch
+75 1E                   # jne skip_patch
 48 FF C6                # inc rsi          advance input
 44 8A 06                # mov r8b, [rsi]   load byte
 41 80 F8 37             # cmp r8b, 37     patch needed?
-75 09                   # jne skip_patch
+75 12                   # jne skip_patch
+# We need to patch (note: this is simplistic since we don't check all bytes, but sufficient for fam1)                 
+48 FF C6                # inc rsi          advance input
+48 FF C6                # inc rsi          advance input
+48 FF C6                # inc rsi          advance input
 41 B8 07 00 00 00       # set r8b to 07
 44 88 06                # mov [rsi], r8b   store byte
 #skip_patch
@@ -211,7 +215,7 @@ E9 57 FF FF FF          # main loop jump back
 74 05          #         je exit_second_pass      ; yes → done
 #next_byte:
 48 FF C6       #         inc rsi                
-EB D8          #         jmp second_pass_loop     ; loop back (short jump -8)
+EB CF          #         jmp second_pass_loop     ; loop back (short jump -8)
 #exit_second_pass:
 
 
