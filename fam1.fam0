@@ -137,19 +137,18 @@ E9 67 00 00 00          # jmp next_byte
 41 B3 00                # mov r11b, 0      end comment on newline
 # skip_nl:
 
-
-45 84 C0                # test r8b, r8b    null terminator?
-0F 84 5D 00 00 00        # je exit
-
-
 # Check if in comment
 45 84 DB                # test r11b, 1     in comment?
-75 50                   # jnz next_byte
+75 59                   # jnz next_byte
 41 80 F8 23             # cmp r8b, '#'
 75 05                   # jne skip_comment
 41 B3 01                # mov r11b, 1      start comment
-EB 45                   # jmp next_byte
+EB 4E                   # jmp next_byte
 # skip_comment:
+
+45 84 C0                # test r8b, r8b    null terminator?
+0F 84 4D 00 00 00        # je exit
+
 
 # Check labels
 41 80 F8 3A             # cmp r8b, ':'     colon?
