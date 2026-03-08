@@ -208,7 +208,7 @@ E9 57 FF FF FF          # main loop jump back
 48 FF C6                # inc rsi          advance input
 44 8A 06                # mov r8b, [rsi]   load byte
 4A 8B 14 04             # mov    rdx,QWORD PTR [rsp+r8*1]
-48 29 FA                # sub rdx, rdi
+48 29 F2                # sub rdx, rsi
 48 83 EE 03             # sub rsi, 3
 89 16                   # mov [rsi], edx (store offset)
 #skip_patch
