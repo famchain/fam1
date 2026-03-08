@@ -114,6 +114,11 @@ B9 00 40 00 00          # mov ecx, 16384   max bytes to process (safety)
 # Main loop start
 44 8A 06                # mov r8b, [rsi]   load byte
 
+41 80 F8 0A             # cmp r8b, 10      newline?
+75 03                   # jne skip_nl
+41 B3 00                # mov r11b, 0      end comment on newline
+# skip_nl:
+
 # Check pointers
 41 80 F8 25             # cmp r8b, percent?
 75 29                   # jne skip percent
@@ -128,14 +133,8 @@ B9 00 40 00 00          # mov ecx, 16384   max bytes to process (safety)
 44 8A 06                # mov r8b, [rsi]   load byte
 44 88 07                # mov [rdi], r8b   store byte
 48 FF C7                # inc rdi          advance output
-E9 6B 00 00 00          # jmp next_byte
+E9 62 00 00 00          # jmp next_byte
 #skip_percent
-
-
-41 80 F8 0A             # cmp r8b, 10      newline?
-75 03                   # jne skip_nl
-41 B3 00                # mov r11b, 0      end comment on newline
-# skip_nl:
 
 # Check if in comment
 45 84 DB                # test r11b, 1     in comment?
